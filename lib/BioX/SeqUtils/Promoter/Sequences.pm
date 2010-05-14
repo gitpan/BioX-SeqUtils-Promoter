@@ -1,10 +1,9 @@
-package BioX::SeqUtils::Promoter::Alignment;
-use base qw(BioX::SeqUtils::Promoter::Base);
+package BioX::SeqUtils::Promoter::Sequences;
+use base qw(BioX::SeqUtils::Promoter::Sequences);
 use Class::Std;
 use Class::Std::Utils;
-use BioX::SeqUtils::Promoter::Sequences;
-use BioX::SeqUtils::Promoter::Annotations;
-use BioX::SeqUtils::Promoter::SaveTypes;
+use BioX::SeqUtils::Promoter::Sequence;
+
 use warnings;
 use strict;
 use Carp;
@@ -12,55 +11,85 @@ use Carp;
 use version; our $VERSION = qv('0.0.2');
 
 {
-        my %sequences_of  :ATTR( :get<sequences>   :set<sequences>   :default<''>    :init_arg<sequences> );
-                
-        sub BUILD {
+        my %sequences_of   :ATTR( :get<sequences>   :set<sequences>   :default<{}>    :init_arg<sequences> );                
+        
+	sub BUILD {
                 my ($self, $ident, $arg_ref) = @_;
         
- 
+
                 return;
         }
 
         sub START {
                 my ($self, $ident, $arg_ref) = @_;
-		my $sequences = BioX::SeqUtils::Promoter::Sequences->new();
-		$self->set_sequences($sequences);
+        
+
                 return;
         }
-
-        sub annotate {
-                my ($self,  $arg_ref) = @_;
-		my $filename = defined $arg_ref->{filename} ?  $arg_ref->{filename} : '';
-		my $annotations = BioX::SeqUtils::Promoter::Annotations->new({type => 'Consensus', motifs => $self->get_default_motifs() });
-		$annotations->print_motifs();
-  
-                return;
-        }
-
-        sub load_alignmentfile {
-                my ($self,  $arg_ref) = @_;
-		my $filename = defined $arg_ref->{filename} ?  $arg_ref->{filename} : '';
-		print "$filename \n ";
-		my $text;
-		#my $line;
-		my $sequences = $self->get_sequences();
-		#just changed from original script^^^ 
-
-		open(IN,"<$filename");
-
-
-		<IN>;
-		while($text = <IN>){
-		        if($text =~/^$|^\s/){print "blank line\n"; next;}
-			my ($key, $value) = split /\s+/, $text;
-			$sequences->add_segment({label => $key, sequence => $value});
+	
+	sub add_sequence {
+                my ($self, $arg_ref) = @_;
+		my $sequence = defined $arg_ref->{sequence} ?  $arg_ref->{sequence} : '';
+		my $label = defined $arg_ref->{label} ?  $arg_ref->{label} : '';
+		my $seqobj = $self->get_sequence({label => $label});
+		if (! $seqobj) {
+			$seqobj = BioX::SeqUtils::Promoter::Sequence->new($arg_ref);
+                	my $sequences = $self->get_sequences();
+			$sequences->{$label} = $seqobj;  
+                	$self->set_sequences($sequences);
 		}
-		my $seqs = $sequences->get_sequences();
-		foreach my $key (keys %$seqs ){ print $seqs->{$key}->get_sequence(),"\n"; }
-
                 return;
         }
+	
+	sub get_dna {
+		my ($self, $arg_ref) = @_;
+		my $sequences = $self->get_sequences();
+                return join('',@$sequences);
+        }
+	sub add_segment {
+                my ($self, $arg_ref) = @_;
+		my $sequence = defined $arg_ref->{sequence} ?  $arg_ref->{sequence} : '';
+		my $label = defined $arg_ref->{label} ?  $arg_ref->{label} : '';
+		my $seqobj = $self->get_sequence({label => $label});
+		if ($seqobj) {
+			$seqobj->add_segment({sequence => $sequence});
+                	my $sequences = $self->get_sequences();
+			$sequences->{$label} = $seqobj;  
+                	$self->set_sequences($sequences);
+		} else {
+			$self->add_sequence($arg_ref);
+		}
+                return;
+        }
+	
+	sub set_color {
+		my ($self, $arg_ref) = @_;
+		my $bases = defined $arg_ref->{bases} ?  $arg_ref->{bases} : '';
+		my $colors = defined $arg_ref->{colors} ?  $arg_ref->{colors} : '';
+		my $label = defined $arg_ref->{label} ?  $arg_ref->{label} : '';
+				            
+		my $colorobj = $self->get_sequence({label  => $label});
+														                  
+	 	if (! $colorobj) { $colorobj = $self->add_sequence($arg_ref); }
 
+                $colorobj->set_color({bases => $bases, colors => $colors});
+    		my $sequences = $self->get_sequences();
+           	$sequences->{$label} = $colorobj;																		                          $self->set_sequences($sequences);
+		return;
+        }
+
+	sub get_sequence {
+                my ($self, $arg_ref) = @_;
+		my $label = defined $arg_ref->{label} ?  $arg_ref->{label} : '';
+		my $found;
+                my $sequences = $self->get_sequences();
+		foreach my $key (keys %$sequences ){
+			if ($key eq $label){
+				$found = $sequences->{$key};		
+			}
+		}
+		return $found;
+        }
 }
 
 1; # Magic true value required at end of module
@@ -68,19 +97,19 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::Alignment - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::Sequences - Sequences used in previous analysis 
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.2
+This document describes BioX::SeqUtils::Promoter::Sequences version 0.0.2
 
 
 =head1 SYNOPSIS
 
-    use BioX::SeqUtils::Promoter::Alignment;
+    use BioX::SeqUtils::Promoter::Sequences;
 
-    my $obj = BioX::SeqUtils::Promoter::Alignment->new({attribute => 'value'});
+    my $obj = BioX::SeqUtils::Promoter::Sequences->new({attribute => 'value'});
 
     print $obj->get_attribute(), "\n";
 
@@ -142,7 +171,7 @@ This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.2
     that can be set. These descriptions must also include details of any
     configuration language used.
   
-BioX::SeqUtils::Promoter::Alignment requires no configuration files or environment variables.
+BioX::SeqUtils::Promoter::Sequences requires no configuration files or environment variables.
 
 
 =head1 DEPENDENCIES
@@ -182,7 +211,7 @@ None reported.
 No bugs have been reported.
 
 Please report any bugs or feature requests to
-C<bug-biox-sequtils-promoter-alignment@rt.cpan.org>, or through the web interface at
+C<bug-biox-sequtils-promoter-Sequences@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org>.
 
 

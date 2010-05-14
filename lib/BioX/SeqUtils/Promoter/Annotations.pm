@@ -2,30 +2,21 @@ package BioX::SeqUtils::Promoter::Annotations;
 #use base qw(BASE);
 use Class::Std;
 use Class::Std::Utils;
+use Module::Runtime qw(use_module);
 
 use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.2');
 
 {
-        my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
-                
-        sub BUILD {
-                my ($self, $ident, $arg_ref) = @_;
-        
-
-                return;
-        }
-
-        sub START {
-                my ($self, $ident, $arg_ref) = @_;
-        
-
-                return;
-        }
-
+	no warnings 'redefine';
+	sub new {      
+		my ($self, $arg_ref) = @_;
+		my $type = defined $arg_ref->{type} ?  $arg_ref->{type} : '';
+		return use_module('BioX::SeqUtils::Promoter::Annotations::' . $type, 0.0.2)->new( $arg_ref );
+	}
 }
 
 1; # Magic true value required at end of module
@@ -33,12 +24,12 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::Annotations - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::Annotations - identification of promoter elements in sequence ,sequences, or alignments
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations version 0.0.1
+This document describes BioX::SeqUtils::Promoter::Annotations version 0.0.2
 
 
 =head1 SYNOPSIS

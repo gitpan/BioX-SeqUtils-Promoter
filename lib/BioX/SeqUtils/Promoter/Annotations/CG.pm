@@ -7,7 +7,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.2');
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -33,12 +33,12 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::Annotations::CG - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::Annotations::CG - identification of CpG islands, CG rich regions 
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::CG version 0.0.1
+This document describes BioX::SeqUtils::Promoter::Annotations::CG version 0.0.2
 
 
 =head1 SYNOPSIS

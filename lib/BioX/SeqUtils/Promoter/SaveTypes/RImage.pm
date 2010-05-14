@@ -1,5 +1,5 @@
 package BioX::SeqUtils::Promoter::SaveTypes::RImage;
-#use base qw(BASE);
+use base qw(BioX::SeqUtils::Promoter::SaveTypes::Base);
 use Class::Std;
 use Class::Std::Utils;
 
@@ -7,25 +7,66 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.2');
 
 {
-        my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
+        my %rcode_of  :ATTR( :get<rcode>   :set<rcode>   :default<''>    :init_arg<rcode> );
+        my %width_of  :ATTR( :get<width>   :set<width>   :default<''>    :init_arg<width> );
+        my %height_of  :ATTR( :get<height>   :set<height>   :default<''>    :init_arg<height> );
                 
         sub BUILD {
                 my ($self, $ident, $arg_ref) = @_;
-        
-
                 return;
         }
 
         sub START {
                 my ($self, $ident, $arg_ref) = @_;
         
-
+		my $r_code .= 'pdf(file="/home/roger/embry/fake.pdf",onefile=FALSE,width=8,height=7,pointsize=10)' . "\n";
+		   $r_code .= 'x=c(1,60)' . "\n";
+		   $r_code .= 'y=c(1,25)' . "\n";
+		   $r_code .= 'plot(x,y,adj=0,ann=FALSE,bty="n",mai=c(0,0,0,0),oma=c(0,0,0,0),pin=c(7,10),xaxt="n",yaxt="n",xpd=NA,col=c("000000"))' . "\n";
+		$self->set_rcode($r_code);
                 return;
         }
 
+	sub save {
+                my ($self, $arg_ref) = @_;
+		my $sequences  = defined $arg_ref->{sequences} ?  $arg_ref->{sequences} : '';
+		my $x_max   = 60;
+		my $y_max   = 25;
+		my @sequences = values %$sequences;
+		my $r_code = $self->get_rcode();
+		my $seqcount = 0;
+		foreach my $seqobj (@sequences) {  
+			my $color_list = $seqobj->get_color_list();	
+			my $base_list = $seqobj->get_base_list();
+			my $label = $seqobj->get_label();
+			$seqcount++; 
+			my $start = $label;
+			my $end   = $label;
+			$r_code .= 'text(3,' . $seqcount . ',"' . $start . '",adj=1,col=c("black"))' . "\n";
+			for ( my $i = 5; $i <= $x_max + 4; $i++ ) {
+				my $letter = $base_list->[$i - 5];
+				my $color = $color_list->[$i - 5] ?  $color_list->[$i - 5] : 'black';
+				$r_code .= 'text(' . $i . ',' . $seqcount . ',"' . $letter . '",adj=0,col=c("' . $color . '"))' . "\n";
+				print 'text(' . $i . ',' . $seqcount . ',"' . $letter . '",adj=0,col=c("' . $color . '"))' . "\n";
+			}
+			$r_code .= 'text(66,' . $seqcount . ',"' . $end . '",adj=0,col=c("black"))' . "\n";
+
+		}
+
+		$r_code .= 'dev.off()' . "\n";
+		$self->set_rcode($r_code);	
+		open (MYFILE, '>r_code.r');
+	        print MYFILE $r_code;
+	        close (MYFILE);
+		`R CMD BATCH r_code.r r_code.out`;
+	}
+
+
+
+	sub print { my ($self) = @_; print $self->get_rcode(); }
 }
 
 1; # Magic true value required at end of module
@@ -33,12 +74,13 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::SaveTypes::RImage - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::SaveTypes::RImage - pdf output file with visually tagged promoter elements via R
+
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.1
+This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.2
 
 
 =head1 SYNOPSIS

@@ -1,5 +1,4 @@
 package BioX::SeqUtils::Promoter::Base;
-#use base qw(BASE);
 use Class::Std;
 use Class::Std::Utils;
 
@@ -7,7 +6,9 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.2');
+
+our $motifs = ['ATCGATA', 'CCGTTA', 'TATATGG' ];
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -19,7 +20,9 @@ use version; our $VERSION = qv('0.0.1');
                 return;
         }
 
-        sub START {
+	sub get_default_motifs { return $motifs; }
+	
+	sub START {
                 my ($self, $ident, $arg_ref) = @_;
         
 
@@ -33,12 +36,12 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::Base - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::Base - 
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Base version 0.0.1
+This document describes BioX::SeqUtils::Promoter::Base version 0.0.2
 
 
 =head1 SYNOPSIS

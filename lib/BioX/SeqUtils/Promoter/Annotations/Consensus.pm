@@ -7,10 +7,10 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.2');
 
 {
-        my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
+        my %motifs_of  :ATTR( :get<motifs>   :set<motifs>   :default<[]>    :init_arg<motifs> );
                 
         sub BUILD {
                 my ($self, $ident, $arg_ref) = @_;
@@ -25,6 +25,12 @@ use version; our $VERSION = qv('0.0.1');
 
                 return;
         }
+        sub print_motifs {
+                my ($self, $arg_ref) = @_;
+		my $motifs = $self->get_motifs();
+		print join(', ', @$motifs ), "\n";
+                return;
+        }
 
 }
 
@@ -33,12 +39,12 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::Annotations::Consensus - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::Annotations::Consensus - identification core promoter elements via consensus sequences 
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.1
+This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.2
 
 
 =head1 SYNOPSIS

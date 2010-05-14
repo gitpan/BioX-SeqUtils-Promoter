@@ -1,30 +1,26 @@
 package BioX::SeqUtils::Promoter::SaveTypes;
-#use base qw(BASE);
+use base qw(BioX::SeqUtils::Promoter::Base);
 use Class::Std;
 use Class::Std::Utils;
+use Module::Runtime qw(use_module);
+
+use BioX::SeqUtils::Promoter::Sequences;
 
 use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.2');
 
 {
-        my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
-                
-        sub BUILD {
-                my ($self, $ident, $arg_ref) = @_;
-        
+	no warnings 'redefine';
+	sub new {      
+		my ($self, $arg_ref) = @_;
+		my $savetypes = defined $arg_ref->{savetypes} ?  $arg_ref->{savetypes} : '';
+		return use_module('BioX::SeqUtils::Promoter::SaveTypes::' . $savetypes, 0.0.2)->new( $arg_ref );
+	}
 
-                return;
-        }
 
-        sub START {
-                my ($self, $ident, $arg_ref) = @_;
-        
-
-                return;
-        }
 
 }
 
@@ -33,12 +29,12 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::SaveTypes - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::SaveTypes - Types of output files to be saved 
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes version 0.0.1
+This document describes BioX::SeqUtils::Promoter::SaveTypes version 0.0.2
 
 
 =head1 SYNOPSIS

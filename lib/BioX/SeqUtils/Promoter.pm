@@ -33,7 +33,7 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter -Identification of core promoter elements and CpG islands in DNA sequeces via Consensus Sequences/Motifs 
 
 
 =head1 VERSION

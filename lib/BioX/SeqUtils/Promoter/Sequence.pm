@@ -7,12 +7,16 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.2');
 
 {
         my %base_list_of   :ATTR( :get<base_list>   :set<base_list>   :default<[]>    :init_arg<base_list> );
-        my %color_list_of  :ATTR( :get<color_list>   :set<color_list>   :default<[]>    :init_arg<color_list> );
-                
+        my %color_list_of  :ATTR( :get<color_list>  :set<color_list>  :default<[]>    :init_arg<color_list> );
+        my %label_of       :ATTR( :get<label>       :set<label>       :default<''>    :init_arg<label> );
+        
+
+
+
         sub BUILD {
                 my ($self, $ident, $arg_ref) = @_;
         
@@ -22,28 +26,67 @@ use version; our $VERSION = qv('0.0.1');
 
         sub START {
                 my ($self, $ident, $arg_ref) = @_;
-        
-
+		#assigned default value
+		my $sequence = defined $arg_ref->{sequence} ?  $arg_ref->{sequence} : '';
+		#splits a list on every character
+		my @sequence = split('',$sequence);
+		#reference a list
+		$self->set_base_list(\@sequence);
                 return;
         }
 	
 	sub get_sequence {
 		my ($self, $arg_ref) = @_;
-
 		my $base_list = $self->get_base_list();
                 return join('',@$base_list);
         }
 	
+	sub get_labels {
+		my ($self, $arg_ref) = @_;
+		my $label = $self->get_label();
+                return join('',@$label);
+        }
 	sub add_segment {
 		my ($self, $arg_ref) = @_;
-		my $segment = defined $arg_ref->{segment} ?  $arg_ref->{segment} : '';
-		my @segment = split('',$segment);
+		my $sequence = defined $arg_ref->{sequence} ?  $arg_ref->{sequence} : '';
+		my @sequence = split('',$sequence);
 
 		my $base_list = $self->get_base_list();
 		my @base_list = @$base_list;
 
-		push @base_list, @segment;
+		push @base_list, @sequence;
 		$self->set_base_list(\@base_list);
+	}
+
+	sub set_color {
+                my ($self, $arg_ref) = @_;
+		my $bases = defined $arg_ref->{bases} ?  $arg_ref->{bases} : '';
+		my $colors = defined $arg_ref->{colors} ?  $arg_ref->{colors} : '';
+		
+		my $color_list = $self->get_color_list({colors => $colors});
+		
+		my $count = @$bases;
+		for (my $i = 0; $i< $count; $i++) {
+			my $base = $bases->[$i];
+			my $color = $colors->[$i];
+			$color_list->[$base] = $color;
+	
+			}		
+		$self->set_color_list($color_list);	
+
+                return;
+        }
+
+	sub add_tag {
+		my ($self, $arg_ref) = @_;
+		my $tag = defined $arg_ref->{tag} ?  $arg_ref->{tag} : '';
+		my @tag = split('',$tag);
+
+		my $label = $self->get_label();
+		my @label = @$label;
+
+		push @label, @tag;
+		$self->set_label(\@label);
 	}
 
 
@@ -54,12 +97,12 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::Sequence - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::Sequence - specific sequences/motifs and colors to be associated with them
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Sequence version 0.0.1
+This document describes BioX::SeqUtils::Promoter::Sequence version 0.0.2
 
 
 =head1 SYNOPSIS
