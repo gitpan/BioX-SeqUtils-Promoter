@@ -7,7 +7,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -38,7 +38,7 @@ BioX::SeqUtils::Promoter::Annotations::Base - [One line description of module's 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::Base version 0.0.2
+This document describes BioX::SeqUtils::Promoter::Annotations::Base version 0.0.3
 
 
 =head1 SYNOPSIS

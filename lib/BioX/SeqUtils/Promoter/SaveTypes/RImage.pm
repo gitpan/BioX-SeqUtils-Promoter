@@ -7,7 +7,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 {
         my %rcode_of  :ATTR( :get<rcode>   :set<rcode>   :default<''>    :init_arg<rcode> );
@@ -80,7 +80,7 @@ BioX::SeqUtils::Promoter::SaveTypes::RImage - pdf output file with visually tagg
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.2
+This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.3
 
 
 =head1 SYNOPSIS

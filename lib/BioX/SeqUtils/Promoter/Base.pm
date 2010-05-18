@@ -6,7 +6,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 our $motifs = ['ATCGATA', 'CCGTTA', 'TATATGG' ];
 
@@ -41,7 +41,7 @@ BioX::SeqUtils::Promoter::Base -
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Base version 0.0.2
+This document describes BioX::SeqUtils::Promoter::Base version 0.0.3
 
 
 =head1 SYNOPSIS

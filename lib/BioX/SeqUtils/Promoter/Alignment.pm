@@ -9,7 +9,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 {
         my %sequences_of  :ATTR( :get<sequences>   :set<sequences>   :default<''>    :init_arg<sequences> );
@@ -68,12 +68,12 @@ __END__
 
 =head1 NAME
 
-BioX::SeqUtils::Promoter::Alignment - [One line description of module's purpose here]
+BioX::SeqUtils::Promoter::Alignment - gets sequences and performs mulitple alignement 
 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.2
+This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.3
 
 
 =head1 SYNOPSIS
