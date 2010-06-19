@@ -1,4 +1,9 @@
 package BioX::SeqUtils::Promoter::Annotations::Consensus;
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
 #use base qw(BASE);
 use Class::Std;
 use Class::Std::Utils;
@@ -7,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
         my %motifs_of  :ATTR( :get<motifs>   :set<motifs>   :default<[]>    :init_arg<motifs> );
@@ -44,7 +49,7 @@ BioX::SeqUtils::Promoter::Annotations::Consensus - identification core promoter 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.3
+This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.4
 
 
 =head1 SYNOPSIS

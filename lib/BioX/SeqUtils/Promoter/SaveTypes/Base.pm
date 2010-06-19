@@ -1,5 +1,10 @@
 package BioX::SeqUtils::Promoter::SaveTypes::Base;
-#use base qw(BASE);
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
+use base qw(BioX::SeqUtils::Promoter::Base);
 use Class::Std;
 use Class::Std::Utils;
 
@@ -7,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -38,7 +43,7 @@ BioX::SeqUtils::Promoter::SaveTypes::Base -
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes::Base version 0.0.3
+This document describes BioX::SeqUtils::Promoter::SaveTypes::Base version 0.0.4
 
 
 =head1 SYNOPSIS

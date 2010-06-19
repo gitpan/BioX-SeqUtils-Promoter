@@ -1,4 +1,9 @@
 package BioX::SeqUtils::Promoter::Sequence;
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
 use base qw(BioX::SeqUtils::Promoter::Base);
 use Class::Std;
 use Class::Std::Utils;
@@ -7,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
         my %base_list_of   :ATTR( :get<base_list>   :set<base_list>   :default<[]>    :init_arg<base_list> );
@@ -102,7 +107,7 @@ BioX::SeqUtils::Promoter::Sequence - specific sequences and colors to be associa
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Sequence version 0.0.3
+This document describes BioX::SeqUtils::Promoter::Sequence version 0.0.4
 
 
 =head1 SYNOPSIS

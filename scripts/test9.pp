@@ -11,7 +11,7 @@ my $base2 = [11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,3
 my $color = ['red', 'red', 'red', 'blue', 'blue', 'blue', 'red' , 'red', 'red', 'red', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'blue', 'blue', 'blue', 'red' , 'red', 'red', 'red', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'red', 'red', 'red',  'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'blue', 'blue', 'blue', 'red' , 'red', 'red', 'red', 'blue', 'blue', 'blue'];
 my $color2 = ['blue', 'blue', 'red', 'red', 'green', 'green', 'green', 'blue', 'blue', 'red', 'red', 'green', 'green', 'green', 'green', 'green', 'green', 'green', 'green', 'green', 'green', 'green', 'green', 'red' , 'red', 'red', 'red', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'red', 'green', 'green', 'green', 'blue', 'red', 'red', 'green', 'green', 'green', 'green', 'red' , 'red', 'red', 'red', 'blue', 'blue',  'green', 'green', 'green', 'green', 'green'];
 
-my $DNA = 'CATATCTACTACECTCACTAAGCTGATCGAGCTAGCTACGTAGCATCGATCGCTAGCTAG';
+my $DNA = 'CATATCTACTACTCTCACTAAGCTGATCGAGCTAGCTACGTAGCATCGATCGCTAGCTAG';
 my $DNA2 = 'ACTTTTTCTAATCATATTTAATAGATGGGACGCGCGCGCGATCGATCGATCGATACTACT';
 
 my $label =  'rab';

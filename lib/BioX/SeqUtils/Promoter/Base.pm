@@ -1,4 +1,9 @@
 package BioX::SeqUtils::Promoter::Base;
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
 use Class::Std;
 use Class::Std::Utils;
 
@@ -6,7 +11,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 our $motifs = ['ATCGATA', 'CCGTTA', 'TATATGG' ];
 
@@ -29,6 +34,12 @@ our $motifs = ['ATCGATA', 'CCGTTA', 'TATATGG' ];
                 return;
         }
 
+	sub length {
+                my ($self, $arg_ref) = @_;
+		my $string  = defined $arg_ref->{string} ?  $arg_ref->{string} : '';
+		my @letters = split('', $string);
+                return scalar(@letters);
+        }
 }
 
 1; # Magic true value required at end of module
@@ -41,7 +52,7 @@ BioX::SeqUtils::Promoter::Base -
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Base version 0.0.3
+This document describes BioX::SeqUtils::Promoter::Base version 0.0.4
 
 
 =head1 SYNOPSIS

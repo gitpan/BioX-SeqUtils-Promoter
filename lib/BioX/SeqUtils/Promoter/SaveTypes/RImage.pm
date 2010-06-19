@@ -1,13 +1,18 @@
 package BioX::SeqUtils::Promoter::SaveTypes::RImage;
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
 use base qw(BioX::SeqUtils::Promoter::SaveTypes::Base);
 use Class::Std;
 use Class::Std::Utils;
-
+use POSIX qw(ceil);
 use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
         my %rcode_of  :ATTR( :get<rcode>   :set<rcode>   :default<''>    :init_arg<rcode> );
@@ -22,38 +27,63 @@ use version; our $VERSION = qv('0.0.3');
         sub START {
                 my ($self, $ident, $arg_ref) = @_;
         
-		my $r_code .= 'pdf(file="/home/roger/embry/fake.pdf",onefile=FALSE,width=8,height=7,pointsize=10)' . "\n";
-		   $r_code .= 'x=c(1,60)' . "\n";
+		my $r_code .= 'x=c(1,68)' . "\n";
 		   $r_code .= 'y=c(1,25)' . "\n";
-		   $r_code .= 'plot(x,y,adj=0,ann=FALSE,bty="n",mai=c(0,0,0,0),oma=c(0,0,0,0),pin=c(7,10),xaxt="n",yaxt="n",xpd=NA,col=c("000000"))' . "\n";
 		$self->set_rcode($r_code);
                 return;
         }
 
+
 	sub save {
                 my ($self, $arg_ref) = @_;
 		my $sequences  = defined $arg_ref->{sequences} ?  $arg_ref->{sequences} : '';
+		
 		my $x_max   = 60;
 		my $y_max   = 25;
+		my $image_count = 0;
 		my @sequences = values %$sequences;
 		my $r_code = $self->get_rcode();
 		my $seqcount = 0;
-		foreach my $seqobj (@sequences) {  
-			my $color_list = $seqobj->get_color_list();	
-			my $base_list = $seqobj->get_base_list();
-			my $label = $seqobj->get_label();
-			$seqcount++; 
-			my $start = $label;
-			my $end   = $label;
-			$r_code .= 'text(3,' . $seqcount . ',"' . $start . '",adj=1,col=c("black"))' . "\n";
-			for ( my $i = 5; $i <= $x_max + 4; $i++ ) {
-				my $letter = $base_list->[$i - 5];
-				my $color = $color_list->[$i - 5] ?  $color_list->[$i - 5] : 'black';
-				$r_code .= 'text(' . $i . ',' . $seqcount . ',"' . $letter . '",adj=0,col=c("' . $color . '"))' . "\n";
-				print 'text(' . $i . ',' . $seqcount . ',"' . $letter . '",adj=0,col=c("' . $color . '"))' . "\n";
-			}
-			$r_code .= 'text(66,' . $seqcount . ',"' . $end . '",adj=0,col=c("black"))' . "\n";
+		my $seqlength = $self->length({ string => $sequences[0]->get_sequence() });
+		my $max_block = ceil($seqlength/$x_max);
+		
+		#lots of prints and test for debugging during creation of module
+		#print "@sequences\n";
+		#print "seqlength is $seqlength\n";
+		#my $test = ceil($test_value/$x_max);
+		#print "my $max_block = ceil($seqlength/$x_max)\n";
+		#my $test_value = 18;
+		#print "my $test = ceil($test_value/$x_max)\n";
+		
+		my $slide_count = 0;
+		for (my $k = 0; $k < $max_block; $k++){
+			$image_count = $k;
+			print "block $k\n";
+			$r_code .= 'pdf(file="/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $k . '.pdf",onefile=FALSE,width=8,height=7,pointsize=10)' . "\n";
+		   	$r_code .= 'plot(x,y,adj=0,ann=FALSE,bty="n",mai=c(0,0,0,0),oma=c(0,0,0,0),pin=c(7,10),xaxt="n",yaxt="n",xpd=NA,col=c("000000"))' . "\n";
+			foreach my $seqobj (@sequences) {  
+				my $color_list = $seqobj->get_color_list();	
+				my $base_list = $seqobj->get_base_list();
+				my $label = $seqobj->get_label();
+				my $ucount = 25 - $seqcount + $slide_count;
+				$seqcount++; 
+				$r_code .= 'text(3,' . $ucount . ',"' . $label . '",adj=1,col=c("black"))' . "\n";
+				#for ( my $i = 5; $i <= $x_max + 4; $i++ ) {
+				for ( my $i = 9; $i <= $x_max + 8; $i++ ) {
+					my $index = $i - 9 + ($k*$x_max);
+					if($index <= $seqlength){
+						my $letter = $base_list->[$index] ? $base_list->[$index] : '-';
+						print "$index\n";
+						my $color = $color_list->[$index] ?  $color_list->[$index] : 'black';
+						$r_code .= 'text(' . $i . ',' . $ucount  . ',"' . $letter . '",adj=0,col=c("' . $color . '"))' . "\n";
+						#print 'text(' . $i . ',' . $seqcount . ',"' . $letter . '",adj=0,col=c("' . $color . '"))' . "\n";
+					}
 
+				}
+
+	
+			}
+				$slide_count = $slide_count + 2;
 		}
 
 		$r_code .= 'dev.off()' . "\n";
@@ -62,9 +92,12 @@ use version; our $VERSION = qv('0.0.3');
 	        print MYFILE $r_code;
 	        close (MYFILE);
 		`R CMD BATCH r_code.r r_code.out`;
+		for (my $j = 0; $j < $image_count + 1; $j++){
+			my $c_image = 'convert /home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $j . '.pdf' . ' /home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $j . '.png';
+			`$c_image`; 
+			}
+
 	}
-
-
 
 	sub print { my ($self) = @_; print $self->get_rcode(); }
 }
@@ -80,7 +113,7 @@ BioX::SeqUtils::Promoter::SaveTypes::RImage - pdf output file with visually tagg
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.3
+This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.4
 
 
 =head1 SYNOPSIS

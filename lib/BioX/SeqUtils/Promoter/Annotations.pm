@@ -1,4 +1,9 @@
 package BioX::SeqUtils::Promoter::Annotations;
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
 #use base qw(BASE);
 use Class::Std;
 use Class::Std::Utils;
@@ -8,14 +13,14 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
 	no warnings 'redefine';
 	sub new {      
 		my ($self, $arg_ref) = @_;
 		my $type = defined $arg_ref->{type} ?  $arg_ref->{type} : '';
-		return use_module('BioX::SeqUtils::Promoter::Annotations::' . $type, 0.0.3)->new( $arg_ref );
+		return use_module('BioX::SeqUtils::Promoter::Annotations::' . $type, 0.0.4)->new( $arg_ref );
 	}
 }
 
@@ -29,7 +34,7 @@ BioX::SeqUtils::Promoter::Annotations - identification of promoter elements in s
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations version 0.0.3
+This document describes BioX::SeqUtils::Promoter::Annotations version 0.0.4
 
 
 =head1 SYNOPSIS

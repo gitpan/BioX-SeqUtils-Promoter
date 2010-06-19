@@ -1,5 +1,10 @@
 package BioX::SeqUtils::Promoter::Sequences;
-use base qw(BioX::SeqUtils::Promoter::Sequences);
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
+use base qw(BioX::SeqUtils::Promoter::Base);
 use Class::Std;
 use Class::Std::Utils;
 use BioX::SeqUtils::Promoter::Sequence;
@@ -8,7 +13,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
         my %sequences_of   :ATTR( :get<sequences>   :set<sequences>   :default<{}>    :init_arg<sequences> );                
@@ -102,7 +107,7 @@ BioX::SeqUtils::Promoter::Sequences - collection object of Sequences
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Sequences version 0.0.3
+This document describes BioX::SeqUtils::Promoter::Sequences version 0.0.4
 
 
 =head1 SYNOPSIS

@@ -1,4 +1,9 @@
 package BioX::SeqUtils::Promoter::Annotations::CG;
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
 #use base qw(BASE);
 use Class::Std;
 use Class::Std::Utils;
@@ -7,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -38,7 +43,7 @@ BioX::SeqUtils::Promoter::Annotations::CG - identification of CpG islands, CG ri
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::CG version 0.0.3
+This document describes BioX::SeqUtils::Promoter::Annotations::CG version 0.0.4
 
 
 =head1 SYNOPSIS

@@ -1,5 +1,12 @@
 package BioX::SeqUtils::Promoter;
 #use base qw(BASE);
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
+
+
 use Class::Std;
 use Class::Std::Utils;
 
@@ -7,7 +14,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -38,7 +45,7 @@ BioX::SeqUtils::Promoter -Identification of core promoter elements and CpG islan
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter version 0.0.3
+This document describes BioX::SeqUtils::Promoter version 0.0.4
 
 
 =head1 SYNOPSIS

@@ -1,4 +1,9 @@
 package BioX::SeqUtils::Promoter::SaveTypes;
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
 use base qw(BioX::SeqUtils::Promoter::Base);
 use Class::Std;
 use Class::Std::Utils;
@@ -10,14 +15,14 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
 	no warnings 'redefine';
 	sub new {      
 		my ($self, $arg_ref) = @_;
 		my $savetypes = defined $arg_ref->{savetypes} ?  $arg_ref->{savetypes} : '';
-		return use_module('BioX::SeqUtils::Promoter::SaveTypes::' . $savetypes, 0.0.3)->new( $arg_ref );
+		return use_module('BioX::SeqUtils::Promoter::SaveTypes::' . $savetypes, 0.0.4)->new( $arg_ref );
 	}
 
 
@@ -34,7 +39,7 @@ BioX::SeqUtils::Promoter::SaveTypes - Types of output files to be saved
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes version 0.0.3
+This document describes BioX::SeqUtils::Promoter::SaveTypes version 0.0.4
 
 
 =head1 SYNOPSIS

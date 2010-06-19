@@ -1,4 +1,9 @@
 package BioX::SeqUtils::Promoter::Alignment;
+####################################################################
+#	               Charles Stephen Embry			   #
+#	            MidSouth Bioinformatics Center		   #
+#	        University of Arkansas Little Rock	           #
+####################################################################
 use base qw(BioX::SeqUtils::Promoter::Base);
 use Class::Std;
 use Class::Std::Utils;
@@ -8,8 +13,12 @@ use BioX::SeqUtils::Promoter::SaveTypes;
 use warnings;
 use strict;
 use Carp;
+use Bio::Perl;
+use Bio::Seq;
+use Bio::SeqIO;
+use Bio::Tools::Run::Alignment::TCoffee;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 {
         my %sequences_of  :ATTR( :get<sequences>   :set<sequences>   :default<''>    :init_arg<sequences> );
@@ -37,10 +46,26 @@ use version; our $VERSION = qv('0.0.3');
                 return;
         }
 
+        sub m_align {
+                my ($self,  $arg_ref) = @_;
+		my $afilename = defined $arg_ref->{afilename} ?  $arg_ref->{afilename} : '';
+ 		my $outfile = '/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/tnrab1000'; 
+		# Build a tcoffee alignment factory
+		#my @params = ('ktuple' => 2, 'matrix' => 'BLOSUM', 'OUTFILE' => tnrab1000.aln );
+		my @params = ('ktuple' => 2, 'matrix' => 'BLOSUM', 'OUTFILE' => $outfile);
+		my $factory = Bio::Tools::Run::Alignment::TCoffee->new(@params);
+		# Pass the factory a list of sequences to be aligned.
+		#$inputfilename = '/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/nrab1000.txt';
+		# $aln is a SimpleAlign object.
+		my $aln = $factory->align($afilename);
+                
+		return;
+       }
+
         sub load_alignmentfile {
                 my ($self,  $arg_ref) = @_;
 		my $filename = defined $arg_ref->{filename} ?  $arg_ref->{filename} : '';
-		print "$filename \n ";
+		#print "$filename \n ";
 		my $text;
 		#my $line;
 		my $sequences = $self->get_sequences();
@@ -73,7 +98,7 @@ BioX::SeqUtils::Promoter::Alignment - gets sequences and performs mulitple align
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.3
+This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.4
 
 
 =head1 SYNOPSIS
