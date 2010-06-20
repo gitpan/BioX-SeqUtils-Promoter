@@ -12,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.4');
+use version; our $VERSION = qv('0.0.5');
 
 {
         my %motifs_of  :ATTR( :get<motifs>   :set<motifs>   :default<[]>    :init_arg<motifs> );
@@ -49,7 +49,7 @@ BioX::SeqUtils::Promoter::Annotations::Consensus - identification core promoter 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.4
+This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.5
 
 
 =head1 SYNOPSIS
