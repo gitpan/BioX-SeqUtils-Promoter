@@ -11,8 +11,10 @@ use POSIX qw(ceil);
 use warnings;
 use strict;
 use Carp;
+use BioX::SeqUtils::Promoter::Sequences;
+use BioX::SeqUtils::Promoter::Sequence;
 
-use version; our $VERSION = qv('0.0.5');
+use version; our $VERSION = qv('0.0.6');
 
 {
         my %rcode_of  :ATTR( :get<rcode>   :set<rcode>   :default<''>    :init_arg<rcode> );
@@ -28,7 +30,8 @@ use version; our $VERSION = qv('0.0.5');
                 my ($self, $ident, $arg_ref) = @_;
         
 		my $r_code .= 'x=c(1,68)' . "\n";
-		   $r_code .= 'y=c(1,25)' . "\n";
+		   $r_code .= 'y=c(1,58)' . "\n";
+		   #$r_code .= 'y=c(1,25)' . "\n";
 		$self->set_rcode($r_code);
                 return;
         }
@@ -39,12 +42,22 @@ use version; our $VERSION = qv('0.0.5');
 		my $sequences  = defined $arg_ref->{sequences} ?  $arg_ref->{sequences} : '';
 		
 		my $x_max   = 60;
-		my $y_max   = 25;
+		#my $y_max   = 25;
+		my $y_max   = 58;
 		my $image_count = 0;
-		my @sequences = values %$sequences;
+		print "Save $sequences\n";
+
+		my @sequences = $sequences->get_objects();
+		print "@sequences\n";	
+		
+		#my $test_label = $sequences[0]->get_label();
+		#my @sequences = values %$sequences;
 		my $r_code = $self->get_rcode();
 		my $seqcount = 0;
-		my $seqlength = $self->length({ string => $sequences[0]->get_sequence() });
+		my $test_label = $sequences[0]->get_label();
+		#my $test_label = get_label($sequence[0]);
+
+		my $seqlength = $self->length({ string => $sequences[0]->get_sequence( label => $test_label) });
 		my $max_block = ceil($seqlength/$x_max);
 		
 		#lots of prints and test for debugging during creation of module
@@ -54,18 +67,24 @@ use version; our $VERSION = qv('0.0.5');
 		#print "my $max_block = ceil($seqlength/$x_max)\n";
 		#my $test_value = 18;
 		#print "my $test = ceil($test_value/$x_max)\n";
+	
 		
+		my $number_seq = 0;
+		foreach my $seqobjcount (@sequences) {  
+		$number_seq++;
+		}
+
 		my $slide_count = 0;
 		for (my $k = 0; $k < $max_block; $k++){
 			$image_count = $k;
 			print "block $k\n";
-			$r_code .= 'pdf(file="/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $k . '.pdf",onefile=FALSE,width=8,height=7,pointsize=10)' . "\n";
+			$r_code .= 'pdf(file="/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $k . '.pdf",onefile=FALSE,width=8,height=7,pointsize=8)' . "\n";
 		   	$r_code .= 'plot(x,y,adj=0,ann=FALSE,bty="n",mai=c(0,0,0,0),oma=c(0,0,0,0),pin=c(7,10),xaxt="n",yaxt="n",xpd=NA,col=c("000000"))' . "\n";
 			foreach my $seqobj (@sequences) {  
 				my $color_list = $seqobj->get_color_list();	
 				my $base_list = $seqobj->get_base_list();
 				my $label = $seqobj->get_label();
-				my $ucount = 25 - $seqcount + $slide_count;
+				my $ucount = $y_max - $seqcount + $slide_count;
 				$seqcount++; 
 				$r_code .= 'text(3,' . $ucount . ',"' . $label . '",adj=1,col=c("black"))' . "\n";
 				#for ( my $i = 5; $i <= $x_max + 4; $i++ ) {
@@ -83,7 +102,7 @@ use version; our $VERSION = qv('0.0.5');
 
 	
 			}
-				$slide_count = $slide_count + 2;
+				$slide_count = $slide_count + $number_seq;
 		}
 
 		$r_code .= 'dev.off()' . "\n";
@@ -113,7 +132,7 @@ BioX::SeqUtils::Promoter::SaveTypes::RImage - pdf output file with visually tagg
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.5
+This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.6
 
 
 =head1 SYNOPSIS

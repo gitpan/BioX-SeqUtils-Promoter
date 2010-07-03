@@ -13,7 +13,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.5');
+use version; our $VERSION = qv('0.0.6');
 
 {
         my %sequences_of   :ATTR( :get<sequences>   :set<sequences>   :default<{}>    :init_arg<sequences> );                
@@ -49,8 +49,17 @@ use version; our $VERSION = qv('0.0.5');
 	sub get_dna {
 		my ($self, $arg_ref) = @_;
 		my $sequences = $self->get_sequences();
-                return join('',@$sequences);
-        }
+		
+		return join('',@$sequences);
+	}
+	
+	sub get_objects {
+		my ($self, $arg_ref) = @_;
+	        my $objects = $self->get_sequences();
+		my @objects = values %$objects;
+		return @objects;
+	}
+	
 	sub add_segment {
                 my ($self, $arg_ref) = @_;
 		my $sequence = defined $arg_ref->{sequence} ?  $arg_ref->{sequence} : '';
@@ -107,7 +116,7 @@ BioX::SeqUtils::Promoter::Sequences - collection object of Sequences
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Sequences version 0.0.5
+This document describes BioX::SeqUtils::Promoter::Sequences version 0.0.6
 
 
 =head1 SYNOPSIS

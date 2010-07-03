@@ -12,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.5');
+use version; our $VERSION = qv('0.0.6');
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -43,7 +43,7 @@ BioX::SeqUtils::Promoter::Annotations::CG - identification of CpG islands, CG ri
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::CG version 0.0.5
+This document describes BioX::SeqUtils::Promoter::Annotations::CG version 0.0.6
 
 
 =head1 SYNOPSIS

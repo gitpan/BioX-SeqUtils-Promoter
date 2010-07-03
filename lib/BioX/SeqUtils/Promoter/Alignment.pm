@@ -18,7 +18,7 @@ use Bio::Seq;
 use Bio::SeqIO;
 use Bio::Tools::Run::Alignment::TCoffee;
 
-use version; our $VERSION = qv('0.0.5');
+use version; our $VERSION = qv('0.0.6');
 
 {
         my %sequences_of  :ATTR( :get<sequences>   :set<sequences>   :default<''>    :init_arg<sequences> );
@@ -76,9 +76,11 @@ use version; our $VERSION = qv('0.0.5');
 
 		<IN>;
 		while($text = <IN>){
-		        if($text =~/^$|^\s/){print "blank line\n"; next;}
-			my ($key, $value) = split /\s+/, $text;
-			$sequences->add_segment({label => $key, sequence => $value});
+		   	if($text) { 
+		   		if($text =~/^$|^\s/){print "blank line\n"; next;}
+				my ($key, $value) = split /\s+/, $text;
+				$sequences->add_segment({label => $key, sequence => $value});
+			}	 
 		}
 		my $seqs = $sequences->get_sequences();
 		foreach my $key (keys %$seqs ){ print $seqs->{$key}->get_sequence(),"\n"; }
@@ -98,7 +100,7 @@ BioX::SeqUtils::Promoter::Alignment - gets sequences and performs mulitple align
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.5
+This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.6
 
 
 =head1 SYNOPSIS
