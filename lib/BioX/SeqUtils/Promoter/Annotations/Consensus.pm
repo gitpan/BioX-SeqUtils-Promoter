@@ -4,15 +4,18 @@ package BioX::SeqUtils::Promoter::Annotations::Consensus;
 #	            MidSouth Bioinformatics Center		   #
 #	        University of Arkansas Little Rock	           #
 ####################################################################
-#use base qw(BASE);
+use base qw(BioX::SeqUtils::Promoter::Annotations::Base);
 use Class::Std;
 use Class::Std::Utils;
 
+use BioX::SeqUtils::Promoter::Sequence;
+use BioX::SeqUtils::Promoter::Sequences;
+use DBIx::MySperql qw(DBConnect SQLExec $dbh);
 use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.6');
+use version; our $VERSION = qv('0.0.8');
 
 {
         my %motifs_of  :ATTR( :get<motifs>   :set<motifs>   :default<[]>    :init_arg<motifs> );
@@ -20,13 +23,11 @@ use version; our $VERSION = qv('0.0.6');
         sub BUILD {
                 my ($self, $ident, $arg_ref) = @_;
         
-
                 return;
         }
 
         sub START {
                 my ($self, $ident, $arg_ref) = @_;
-        
 
                 return;
         }
@@ -36,6 +37,82 @@ use version; our $VERSION = qv('0.0.6');
 		print join(', ', @$motifs ), "\n";
                 return;
         }
+	
+	sub set_reg {
+		my ($self, $arg_ref) = @_;
+		my $bases = defined $arg_ref->{bases} ?  $arg_ref->{bases} : '';
+		my $num = 0;	
+		my $database = 'stephen';
+		my $host     = 'localhost';
+		my $user     = 'root';
+		my $pass     = '2020.mbc';
+		my @sequences = $bases->get_objects();
+
+		foreach my $seqobj(@sequences) {
+		
+			my $DNA = $seqobj->get_sequence();
+			my $test     = $DNA;
+			my $label = $sequences[$num]->get_label();
+			print "$label\n";
+			my $seqlength = $self->length({ string => $sequences[$num]->get_sequence( label => $label) });
+			print "$seqlength\n";		
+			$num++;
+		
+			#my $colors = $seqobj->get_color_list();
+			my $colors;
+
+			#print "$colors->[0]\n";
+			
+			#my $base = $seqobj->get_base_list();
+			my $base;
+
+			for(my $k =0; $k <= $seqlength; $k++){
+				$base->[$k] = $k;	
+				$colors->[$k] = 'black';	
+			}
+			
+			print "$base->[0]\n";
+			print "$base->[7]\n";
+			print "$colors->[4]\n";
+			
+			#print "$label\n";	
+
+			$dbh = DBConnect(database => $database, host => $host, user => $user, pass => $pass);
+
+			my $sql = "select motif_id, name, motif, length, color from motifs";
+			my $rowsref = SQLExec( $sql, '\@@' );
+			foreach my $rowref ( @$rowsref ) {
+				my ( $id, $name, $motif, $length, $color ) = @$rowref;
+				my $pattern = "(.*)($motif)";
+				my $position;
+				my $first = 1;
+				while ( $test =~ m/(.*?)$motif/g ) {
+					if ( $first ) {
+						 $position = scalar( split( '', $1 ) ) + 1;
+					} else {
+						 $position += scalar( split( '', $1 ) ) + $length;
+					}
+					print "$id, $name, $motif, $position, $length, $color \n";
+					$first = 0;
+					for (my $i = 0 ; $i <= $length; $i++ ) {
+						$colors->[$position + $i] = $color;
+					}
+
+				print "$color\n";
+				print "test space\n";
+				#$bases->set_color({bases => $base, colors => $colors, label => $label});
+
+				}
+		
+			}
+		
+				$bases->set_color({bases => $base, colors => $colors, label => $label});
+		}
+
+		return;
+        }
+
+
 
 }
 
@@ -49,7 +126,7 @@ BioX::SeqUtils::Promoter::Annotations::Consensus - identification core promoter 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.6
+This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.8
 
 
 =head1 SYNOPSIS

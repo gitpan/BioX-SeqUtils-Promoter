@@ -4,25 +4,32 @@ package BioX::SeqUtils::Promoter::Annotations;
 #	            MidSouth Bioinformatics Center		   #
 #	        University of Arkansas Little Rock	           #
 ####################################################################
-#use base qw(BASE);
+use base qw(BioX::SeqUtils::Promoter::Base);
 use Class::Std;
+use BioX::SeqUtils::Promoter::Sequence;
+use BioX::SeqUtils::Promoter::Sequences;
 use Class::Std::Utils;
 use Module::Runtime qw(use_module);
+
 
 use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.6');
+use version; our $VERSION = qv('0.0.8');
 
 {
 	no warnings 'redefine';
 	sub new {      
 		my ($self, $arg_ref) = @_;
 		my $type = defined $arg_ref->{type} ?  $arg_ref->{type} : '';
-		return use_module('BioX::SeqUtils::Promoter::Annotations::' . $type, 0.0.6)->new( $arg_ref );
+		return use_module('BioX::SeqUtils::Promoter::Annotations::' . $type, 0.0.8)->new( $arg_ref );
 	}
+
+
+
 }
+
 
 1; # Magic true value required at end of module
 __END__
@@ -34,7 +41,7 @@ BioX::SeqUtils::Promoter::Annotations - identification of promoter elements in s
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations version 0.0.6
+This document describes BioX::SeqUtils::Promoter::Annotations version 0.0.8
 
 
 =head1 SYNOPSIS

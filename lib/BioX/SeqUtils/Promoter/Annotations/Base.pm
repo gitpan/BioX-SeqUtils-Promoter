@@ -4,7 +4,7 @@ package BioX::SeqUtils::Promoter::Annotations::Base;
 #	            MidSouth Bioinformatics Center		   #
 #	        University of Arkansas Little Rock	           #
 ####################################################################
-#use base qw(BASE);
+use base qw(BioX::SeqUtils::Promoter::Base);
 use Class::Std;
 use Class::Std::Utils;
 
@@ -12,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.6');
+use version; our $VERSION = qv('0.0.8');
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -43,7 +43,7 @@ BioX::SeqUtils::Promoter::Annotations::Base - [One line description of module's 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::Base version 0.0.6
+This document describes BioX::SeqUtils::Promoter::Annotations::Base version 0.0.8
 
 
 =head1 SYNOPSIS

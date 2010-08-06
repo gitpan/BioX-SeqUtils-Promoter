@@ -13,8 +13,11 @@ use strict;
 use Carp;
 use BioX::SeqUtils::Promoter::Sequences;
 use BioX::SeqUtils::Promoter::Sequence;
+use BioX::SeqUtils::Promoter::Alignment;
+use BioX::SeqUtils::Promoter::Annotations::Consensus;
+use BioX::SeqUtils::Promoter::Annotations;
 
-use version; our $VERSION = qv('0.0.6');
+use version; our $VERSION = qv('0.0.8');
 
 {
         my %rcode_of  :ATTR( :get<rcode>   :set<rcode>   :default<''>    :init_arg<rcode> );
@@ -58,6 +61,7 @@ use version; our $VERSION = qv('0.0.6');
 		#my $test_label = get_label($sequence[0]);
 
 		my $seqlength = $self->length({ string => $sequences[0]->get_sequence( label => $test_label) });
+	
 		my $max_block = ceil($seqlength/$x_max);
 		
 		#lots of prints and test for debugging during creation of module
@@ -78,7 +82,7 @@ use version; our $VERSION = qv('0.0.6');
 		for (my $k = 0; $k < $max_block; $k++){
 			$image_count = $k;
 			print "block $k\n";
-			$r_code .= 'pdf(file="/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $k . '.pdf",onefile=FALSE,width=8,height=7,pointsize=8)' . "\n";
+			$r_code .= 'pdf(file = "/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $k . '.pdf",onefile=TRUE,width=8,height=7,pointsize=8)' . "\n";
 		   	$r_code .= 'plot(x,y,adj=0,ann=FALSE,bty="n",mai=c(0,0,0,0),oma=c(0,0,0,0),pin=c(7,10),xaxt="n",yaxt="n",xpd=NA,col=c("000000"))' . "\n";
 			foreach my $seqobj (@sequences) {  
 				my $color_list = $seqobj->get_color_list();	
@@ -132,7 +136,7 @@ BioX::SeqUtils::Promoter::SaveTypes::RImage - pdf output file with visually tagg
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.6
+This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.8
 
 
 =head1 SYNOPSIS

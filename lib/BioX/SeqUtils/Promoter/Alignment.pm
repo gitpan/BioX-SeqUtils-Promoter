@@ -9,6 +9,7 @@ use Class::Std;
 use Class::Std::Utils;
 use BioX::SeqUtils::Promoter::Sequences;
 use BioX::SeqUtils::Promoter::Annotations;
+use BioX::SeqUtils::Promoter::Annotations::Consensus;
 use BioX::SeqUtils::Promoter::SaveTypes;
 use warnings;
 use strict;
@@ -18,7 +19,7 @@ use Bio::Seq;
 use Bio::SeqIO;
 use Bio::Tools::Run::Alignment::TCoffee;
 
-use version; our $VERSION = qv('0.0.6');
+use version; our $VERSION = qv('0.0.8');
 
 {
         my %sequences_of  :ATTR( :get<sequences>   :set<sequences>   :default<''>    :init_arg<sequences> );
@@ -100,7 +101,7 @@ BioX::SeqUtils::Promoter::Alignment - gets sequences and performs mulitple align
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.6
+This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.8
 
 
 =head1 SYNOPSIS
