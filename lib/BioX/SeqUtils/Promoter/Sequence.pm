@@ -12,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.8');
+use version; our $VERSION = qv('0.1.0');
 
 {
         my %base_list_of   :ATTR( :get<base_list>   :set<base_list>   :default<[]>    :init_arg<base_list> );
@@ -43,6 +43,7 @@ use version; our $VERSION = qv('0.0.8');
 	sub get_sequence {
 		my ($self, $arg_ref) = @_;
 		my $base_list = $self->get_base_list();
+		#returns the list of nucleotides as a single string
                 return join('',@$base_list);
         }
 	
@@ -53,6 +54,7 @@ use version; our $VERSION = qv('0.0.8');
         }
 	sub add_segment {
 		my ($self, $arg_ref) = @_;
+		#takes a sequence and adds it to base_list
 		my $sequence = defined $arg_ref->{sequence} ?  $arg_ref->{sequence} : '';
 		my @sequence = split('',$sequence);
 
@@ -65,11 +67,12 @@ use version; our $VERSION = qv('0.0.8');
 
 	sub set_color {
                 my ($self, $arg_ref) = @_;
+
 		my $bases = defined $arg_ref->{bases} ?  $arg_ref->{bases} : '';
 		my $colors = defined $arg_ref->{colors} ?  $arg_ref->{colors} : '';
 		
 		my $color_list = $self->get_color_list({colors => $colors});
-		
+			
 		my $count = @$bases;
 		for (my $i = 0; $i< $count; $i++) {
 			my $base = $bases->[$i];
@@ -79,7 +82,7 @@ use version; our $VERSION = qv('0.0.8');
 			}		
 
 		$self->set_color_list($color_list);	
-
+		#color list will be used to give each character from a mulitple alignment file a color
                 return;
         }
 
@@ -108,7 +111,7 @@ BioX::SeqUtils::Promoter::Sequence - specific sequences and colors to be associa
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Sequence version 0.0.8
+This document describes BioX::SeqUtils::Promoter::Sequence version 0.1.0
 
 
 =head1 SYNOPSIS

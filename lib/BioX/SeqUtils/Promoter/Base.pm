@@ -11,7 +11,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.8');
+use version; our $VERSION = qv('0.1.0');
 
 our $motifs = ['ATCGATA', 'CCGTTA', 'TATATGG' ];
 
@@ -38,6 +38,7 @@ our $motifs = ['ATCGATA', 'CCGTTA', 'TATATGG' ];
                 my ($self, $arg_ref) = @_;
 		my $string  = defined $arg_ref->{string} ?  $arg_ref->{string} : '';
 		my @letters = split('', $string);
+		#tells howlong a sequence is, important for other objects in Promoter module
                 return scalar(@letters);
         }
 }
@@ -52,7 +53,7 @@ BioX::SeqUtils::Promoter::Base -
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Base version 0.0.8
+This document describes BioX::SeqUtils::Promoter::Base version 0.1.0
 
 
 =head1 SYNOPSIS

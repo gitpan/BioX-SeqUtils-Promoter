@@ -15,7 +15,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.8');
+use version; our $VERSION = qv('0.1.0');
 
 {
         my %motifs_of  :ATTR( :get<motifs>   :set<motifs>   :default<[]>    :init_arg<motifs> );
@@ -40,6 +40,7 @@ use version; our $VERSION = qv('0.0.8');
 	
 	sub set_reg {
 		my ($self, $arg_ref) = @_;
+		#takes a Sequences object as a parameter
 		my $bases = defined $arg_ref->{bases} ?  $arg_ref->{bases} : '';
 		my $num = 0;	
 		my $database = 'stephen';
@@ -47,15 +48,16 @@ use version; our $VERSION = qv('0.0.8');
 		my $user     = 'root';
 		my $pass     = '2020.mbc';
 		my @sequences = $bases->get_objects();
+		my $id_seq;
 
 		foreach my $seqobj(@sequences) {
 		
 			my $DNA = $seqobj->get_sequence();
 			my $test     = $DNA;
 			my $label = $sequences[$num]->get_label();
-			print "$label\n";
+			#print "$label\n";
 			my $seqlength = $self->length({ string => $sequences[$num]->get_sequence( label => $label) });
-			print "$seqlength\n";		
+			#print "$seqlength\n";		
 			$num++;
 		
 			#my $colors = $seqobj->get_color_list();
@@ -66,40 +68,41 @@ use version; our $VERSION = qv('0.0.8');
 			#my $base = $seqobj->get_base_list();
 			my $base;
 
+			#create a default list of colors the correct length and a list of ascending numberical value
 			for(my $k =0; $k <= $seqlength; $k++){
 				$base->[$k] = $k;	
 				$colors->[$k] = 'black';	
 			}
 			
-			print "$base->[0]\n";
-			print "$base->[7]\n";
-			print "$colors->[4]\n";
 			
-			#print "$label\n";	
+			$id_seq .= "$label\n";	
 
+			#connect to MySql database
 			$dbh = DBConnect(database => $database, host => $host, user => $user, pass => $pass);
 
-			my $sql = "select motif_id, name, motif, length, color from motifs";
+			my $sql = "select consensus_id, consensus_name, motif, length, color from consensus";
 			my $rowsref = SQLExec( $sql, '\@@' );
 			foreach my $rowref ( @$rowsref ) {
 				my ( $id, $name, $motif, $length, $color ) = @$rowref;
 				my $pattern = "(.*)($motif)";
 				my $position;
 				my $first = 1;
+				#match database sequences against user data
 				while ( $test =~ m/(.*?)$motif/g ) {
 					if ( $first ) {
 						 $position = scalar( split( '', $1 ) ) + 1;
 					} else {
 						 $position += scalar( split( '', $1 ) ) + $length;
 					}
-					print "$id, $name, $motif, $position, $length, $color \n";
+		
+					#print "$id, $name, $motif, $position, $length, $color \n";
+					$id_seq .= "$id, $name, $motif, $position, $length, $color \n";
 					$first = 0;
-					for (my $i = 0 ; $i <= $length; $i++ ) {
-						$colors->[$position + $i] = $color;
+					for (my $i = 0 ; $i <= $length - 1; $i++ ) {
+						
+						$colors->[$position -1 + $i] = $color;
 					}
-
-				print "$color\n";
-				print "test space\n";
+				#print "test space\n";
 				#$bases->set_color({bases => $base, colors => $colors, label => $label});
 
 				}
@@ -108,11 +111,14 @@ use version; our $VERSION = qv('0.0.8');
 		
 				$bases->set_color({bases => $base, colors => $colors, label => $label});
 		}
+		
+		open (MYFILE, '>out_consensus');
+		#write a file that list in which sequence object matches where found
+	        print MYFILE $id_seq;
+	        close (MYFILE);
 
 		return;
         }
-
-
 
 }
 
@@ -126,7 +132,7 @@ BioX::SeqUtils::Promoter::Annotations::Consensus - identification core promoter 
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.0.8
+This document describes BioX::SeqUtils::Promoter::Annotations::Consensus version 0.1.0
 
 
 =head1 SYNOPSIS

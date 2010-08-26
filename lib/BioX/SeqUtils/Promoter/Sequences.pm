@@ -13,7 +13,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.8');
+use version; our $VERSION = qv('0.1.0');
 
 {
         my %sequences_of   :ATTR( :get<sequences>   :set<sequences>   :default<{}>    :init_arg<sequences> );                
@@ -38,6 +38,7 @@ use version; our $VERSION = qv('0.0.8');
 		my $label = defined $arg_ref->{label} ?  $arg_ref->{label} : '';
 		my $seqobj = $self->get_sequence({label => $label});
 		if (! $seqobj) {
+			#if seequnece object with this label does not exist this creates one
 			$seqobj = BioX::SeqUtils::Promoter::Sequence->new($arg_ref);
                 	my $sequences = $self->get_sequences();
 			$sequences->{$label} = $seqobj;  
@@ -57,6 +58,7 @@ use version; our $VERSION = qv('0.0.8');
 		my ($self, $arg_ref) = @_;
 	        my $objects = $self->get_sequences();
 		my @objects = values %$objects;
+		#returns actual objects and not reference for use by other objects
 		return @objects;
 	}
 	
@@ -64,6 +66,7 @@ use version; our $VERSION = qv('0.0.8');
                 my ($self, $arg_ref) = @_;
 		my $sequence = defined $arg_ref->{sequence} ?  $arg_ref->{sequence} : '';
 		my $label = defined $arg_ref->{label} ?  $arg_ref->{label} : '';
+		#adds a segment of dna data to a sequence object
 		my $seqobj = $self->get_sequence({label => $label});
 		if ($seqobj) {
 			$seqobj->add_segment({sequence => $sequence});
@@ -80,6 +83,7 @@ use version; our $VERSION = qv('0.0.8');
 		my ($self, $arg_ref) = @_;
 		my $bases = defined $arg_ref->{bases} ?  $arg_ref->{bases} : '';
 		my $colors = defined $arg_ref->{colors} ?  $arg_ref->{colors} : '';
+		#label identifies which sequence object in this collection object to set color
 		my $label = defined $arg_ref->{label} ?  $arg_ref->{label} : '';
 				            
 		my $colorobj = $self->get_sequence({label  => $label});
@@ -89,6 +93,7 @@ use version; our $VERSION = qv('0.0.8');
                 $colorobj->set_color({bases => $bases, colors => $colors});
     		my $sequences = $self->get_sequences();
            	$sequences->{$label} = $colorobj;																		                          $self->set_sequences($sequences);
+		#sets color list in a sequence object
 		return;
         }
 
@@ -102,6 +107,7 @@ use version; our $VERSION = qv('0.0.8');
 				$found = $sequences->{$key};		
 			}
 		}
+		#returns a sequence from a seqeunce object
 		return $found;
         }
 }
@@ -116,7 +122,7 @@ BioX::SeqUtils::Promoter::Sequences - collection object of Sequences
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Sequences version 0.0.8
+This document describes BioX::SeqUtils::Promoter::Sequences version 0.1.0
 
 
 =head1 SYNOPSIS

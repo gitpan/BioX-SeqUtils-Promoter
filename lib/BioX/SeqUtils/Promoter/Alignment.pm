@@ -19,7 +19,7 @@ use Bio::Seq;
 use Bio::SeqIO;
 use Bio::Tools::Run::Alignment::TCoffee;
 
-use version; our $VERSION = qv('0.0.8');
+use version; our $VERSION = qv('0.1.0');
 
 {
         my %sequences_of  :ATTR( :get<sequences>   :set<sequences>   :default<''>    :init_arg<sequences> );
@@ -49,14 +49,24 @@ use version; our $VERSION = qv('0.0.8');
 
         sub m_align {
                 my ($self,  $arg_ref) = @_;
+		#a file of fasta sequences will be a parameter
 		my $afilename = defined $arg_ref->{afilename} ?  $arg_ref->{afilename} : '';
+		#matrix used multiple alignment, can be Pam, Blosum or none
+		my $matrix = defined $arg_ref->{matrix} ?  $arg_ref->{matrix} : '';
+		#the pentaly for opening a gap in the alignment
+		my $gap_open = defined $arg_ref->{gap_open} ?  $arg_ref->{gap_open} : '';
+		#the pentaly for exiting a gap
+		my $gap_ext = defined $arg_ref->{gap_ext} ?  $arg_ref->{gap_ext} : '';
+		#name and location of output file
  		my $outfile = '/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/tnrab1000'; 
 		# Build a tcoffee alignment factory
 		#my @params = ('ktuple' => 2, 'matrix' => 'BLOSUM', 'OUTFILE' => tnrab1000.aln );
-		my @params = ('ktuple' => 2, 'matrix' => 'BLOSUM', 'OUTFILE' => $outfile);
+		my @params = ('ktuple' => 2, 'matrix' => $matrix, 'GAPOPEN' => $gap_open, 'GAPEXT' => $gap_ext, 'OUTFILE' => $outfile);
+		#my @params = ('ktuple' => 2, 'matrix' => 'Pam', 'GAPOPEN' => 10, 'GAPEXT' => 2, 'OUTFILE' => p_GO10GE2_hexr );
+		#my @params = ('ktuple' => 2, 'matrix' => 'BLOSUM', 'OUTFILE' => $outfile);
+		# feed a list of parameters to Tcoffee
 		my $factory = Bio::Tools::Run::Alignment::TCoffee->new(@params);
 		# Pass the factory a list of sequences to be aligned.
-		#$inputfilename = '/home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/nrab1000.txt';
 		# $aln is a SimpleAlign object.
 		my $aln = $factory->align($afilename);
                 
@@ -65,20 +75,20 @@ use version; our $VERSION = qv('0.0.8');
 
         sub load_alignmentfile {
                 my ($self,  $arg_ref) = @_;
+		#load a output file from a multiple sequence alignment
 		my $filename = defined $arg_ref->{filename} ?  $arg_ref->{filename} : '';
-		#print "$filename \n ";
 		my $text;
 		#my $line;
 		my $sequences = $self->get_sequences();
-		#just changed from original script^^^ 
 
 		open(IN,"<$filename");
-
-
+		
+		# takes each gene name and uses it as a key for a hash and the data for teh values
 		<IN>;
 		while($text = <IN>){
 		   	if($text) { 
-		   		if($text =~/^$|^\s/){print "blank line\n"; next;}
+		   		#if($text =~/^$|^\s/){print "blank line\n"; next;}
+		   		if($text =~/^$|^\s/){next;}
 				my ($key, $value) = split /\s+/, $text;
 				$sequences->add_segment({label => $key, sequence => $value});
 			}	 
@@ -101,7 +111,7 @@ BioX::SeqUtils::Promoter::Alignment - gets sequences and performs mulitple align
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Alignment version 0.0.8
+This document describes BioX::SeqUtils::Promoter::Alignment version 0.1.0
 
 
 =head1 SYNOPSIS

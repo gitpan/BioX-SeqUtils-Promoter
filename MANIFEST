@@ -17,3 +17,4 @@ lib/BioX/SeqUtils/Promoter/SaveTypes/Base.pm
 lib/BioX/SeqUtils/Promoter/SaveTypes/RImage.pm
 lib/BioX/SeqUtils/Promoter/SaveTypes/Text.pm
 t/00.load.t
+t/10.load.t

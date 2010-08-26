@@ -17,7 +17,7 @@ use BioX::SeqUtils::Promoter::Alignment;
 use BioX::SeqUtils::Promoter::Annotations::Consensus;
 use BioX::SeqUtils::Promoter::Annotations;
 
-use version; our $VERSION = qv('0.0.8');
+use version; our $VERSION = qv('0.1.0');
 
 {
         my %rcode_of  :ATTR( :get<rcode>   :set<rcode>   :default<''>    :init_arg<rcode> );
@@ -31,7 +31,7 @@ use version; our $VERSION = qv('0.0.8');
 
         sub START {
                 my ($self, $ident, $arg_ref) = @_;
-        
+       		#every pdf document will have a max of 68 character perline and 58 lines per page 
 		my $r_code .= 'x=c(1,68)' . "\n";
 		   $r_code .= 'y=c(1,58)' . "\n";
 		   #$r_code .= 'y=c(1,25)' . "\n";
@@ -42,6 +42,7 @@ use version; our $VERSION = qv('0.0.8');
 
 	sub save {
                 my ($self, $arg_ref) = @_;
+		#sequeces object will the  parameter 
 		my $sequences  = defined $arg_ref->{sequences} ?  $arg_ref->{sequences} : '';
 		
 		my $x_max   = 60;
@@ -59,7 +60,8 @@ use version; our $VERSION = qv('0.0.8');
 		my $seqcount = 0;
 		my $test_label = $sequences[0]->get_label();
 		#my $test_label = get_label($sequence[0]);
-
+		
+		#seen how long sequences are
 		my $seqlength = $self->length({ string => $sequences[0]->get_sequence( label => $test_label) });
 	
 		my $max_block = ceil($seqlength/$x_max);
@@ -75,6 +77,7 @@ use version; our $VERSION = qv('0.0.8');
 		
 		my $number_seq = 0;
 		foreach my $seqobjcount (@sequences) {  
+		#counts number of sequence objects in the sequences object
 		$number_seq++;
 		}
 
@@ -88,6 +91,7 @@ use version; our $VERSION = qv('0.0.8');
 				my $color_list = $seqobj->get_color_list();	
 				my $base_list = $seqobj->get_base_list();
 				my $label = $seqobj->get_label();
+				#keeps a label and its data on the same line on each document
 				my $ucount = $y_max - $seqcount + $slide_count;
 				$seqcount++; 
 				$r_code .= 'text(3,' . $ucount . ',"' . $label . '",adj=1,col=c("black"))' . "\n";
@@ -96,8 +100,9 @@ use version; our $VERSION = qv('0.0.8');
 					my $index = $i - 9 + ($k*$x_max);
 					if($index <= $seqlength){
 						my $letter = $base_list->[$index] ? $base_list->[$index] : '-';
-						print "$index\n";
+						#print "$index\n";
 						my $color = $color_list->[$index] ?  $color_list->[$index] : 'black';
+						# this uses base_list and color_list from sequence objects to give every letter in sequence data a color in the PDF document
 						$r_code .= 'text(' . $i . ',' . $ucount  . ',"' . $letter . '",adj=0,col=c("' . $color . '"))' . "\n";
 						#print 'text(' . $i . ',' . $seqcount . ',"' . $letter . '",adj=0,col=c("' . $color . '"))' . "\n";
 					}
@@ -107,15 +112,19 @@ use version; our $VERSION = qv('0.0.8');
 	
 			}
 				$slide_count = $slide_count + $number_seq;
+			#every pdf device in turned off before each new pdf is made. Gets around the pdf device limit in R
+			$r_code .= 'dev.off()' . "\n";
 		}
 
-		$r_code .= 'dev.off()' . "\n";
+		#$r_code .= 'dev.off()' . "\n";
 		$self->set_rcode($r_code);	
 		open (MYFILE, '>r_code.r');
 	        print MYFILE $r_code;
 	        close (MYFILE);
+		#runs the created R script in command line
 		`R CMD BATCH r_code.r r_code.out`;
 		for (my $j = 0; $j < $image_count + 1; $j++){
+			#creates png files for website
 			my $c_image = 'convert /home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $j . '.pdf' . ' /home/stephen/BioCapstone/BioX-SeqUtils-Promoter/data/block' . $j . '.png';
 			`$c_image`; 
 			}
@@ -136,7 +145,7 @@ BioX::SeqUtils::Promoter::SaveTypes::RImage - pdf output file with visually tagg
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.0.8
+This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.1.0
 
 
 =head1 SYNOPSIS

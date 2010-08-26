@@ -16,14 +16,14 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.8');
+use version; our $VERSION = qv('0.1.0');
 
 {
 	no warnings 'redefine';
 	sub new {      
 		my ($self, $arg_ref) = @_;
 		my $type = defined $arg_ref->{type} ?  $arg_ref->{type} : '';
-		return use_module('BioX::SeqUtils::Promoter::Annotations::' . $type, 0.0.8)->new( $arg_ref );
+		return use_module('BioX::SeqUtils::Promoter::Annotations::' . $type, 0.1.0)->new( $arg_ref );
 	}
 
 
@@ -41,7 +41,7 @@ BioX::SeqUtils::Promoter::Annotations - identification of promoter elements in s
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Annotations version 0.0.8
+This document describes BioX::SeqUtils::Promoter::Annotations version 0.1.0
 
 
 =head1 SYNOPSIS
