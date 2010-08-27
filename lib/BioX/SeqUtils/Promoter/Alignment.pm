@@ -19,7 +19,7 @@ use Bio::Seq;
 use Bio::SeqIO;
 use Bio::Tools::Run::Alignment::TCoffee;
 
-use version; our $VERSION = qv('0.1.0');
+use version; our $VERSION = qv('0.1.1');
 
 {
         my %sequences_of  :ATTR( :get<sequences>   :set<sequences>   :default<''>    :init_arg<sequences> );
@@ -111,7 +111,7 @@ BioX::SeqUtils::Promoter::Alignment - gets sequences and performs mulitple align
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Alignment version 0.1.0
+This document describes BioX::SeqUtils::Promoter::Alignment version 0.1.1
 
 
 =head1 SYNOPSIS

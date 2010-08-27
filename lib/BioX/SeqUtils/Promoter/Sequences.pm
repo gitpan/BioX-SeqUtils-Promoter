@@ -13,7 +13,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.1.0');
+use version; our $VERSION = qv('0.1.1');
 
 {
         my %sequences_of   :ATTR( :get<sequences>   :set<sequences>   :default<{}>    :init_arg<sequences> );                
@@ -122,7 +122,7 @@ BioX::SeqUtils::Promoter::Sequences - collection object of Sequences
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Sequences version 0.1.0
+This document describes BioX::SeqUtils::Promoter::Sequences version 0.1.1
 
 
 =head1 SYNOPSIS

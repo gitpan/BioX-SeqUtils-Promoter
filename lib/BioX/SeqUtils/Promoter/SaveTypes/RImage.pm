@@ -17,7 +17,7 @@ use BioX::SeqUtils::Promoter::Alignment;
 use BioX::SeqUtils::Promoter::Annotations::Consensus;
 use BioX::SeqUtils::Promoter::Annotations;
 
-use version; our $VERSION = qv('0.1.0');
+use version; our $VERSION = qv('0.1.1');
 
 {
         my %rcode_of  :ATTR( :get<rcode>   :set<rcode>   :default<''>    :init_arg<rcode> );
@@ -145,7 +145,7 @@ BioX::SeqUtils::Promoter::SaveTypes::RImage - pdf output file with visually tagg
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.1.0
+This document describes BioX::SeqUtils::Promoter::SaveTypes::RImage version 0.1.1
 
 
 =head1 SYNOPSIS

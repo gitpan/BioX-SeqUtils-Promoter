@@ -14,7 +14,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.1.0');
+use version; our $VERSION = qv('0.1.1');
 
 {
         my %attribute_of  :ATTR( :get<attribute>   :set<attribute>   :default<''>    :init_arg<attribute> );
@@ -45,7 +45,7 @@ BioX::SeqUtils::Promoter -Identification of core promoter elements and CpG islan
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter version 0.1.0
+This document describes BioX::SeqUtils::Promoter version 0.1.1
 
 
 =head1 SYNOPSIS

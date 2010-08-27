@@ -12,7 +12,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.1.0');
+use version; our $VERSION = qv('0.1.1');
 
 {
         my %base_list_of   :ATTR( :get<base_list>   :set<base_list>   :default<[]>    :init_arg<base_list> );
@@ -111,7 +111,7 @@ BioX::SeqUtils::Promoter::Sequence - specific sequences and colors to be associa
 
 =head1 VERSION
 
-This document describes BioX::SeqUtils::Promoter::Sequence version 0.1.0
+This document describes BioX::SeqUtils::Promoter::Sequence version 0.1.1
 
 
 =head1 SYNOPSIS
